@@ -16,11 +16,11 @@ function Slidebar() {
             </div>
             <div className="absolute bottom-10  text-[#d6d6d6] font-semibold space-y-4">
                 <div className='flex'>
-                    <img src="setting.png" alt="setting" className='h-6'/>
+                    <img src="setting.png" alt="setting" className='h-5 pr-2 mt-1'/>
                     <Slidelink linkname='Settings' linkurl='/settings'/>
                 </div>
                 <div className='flex'>
-                    <img src="logout.png" alt="logout" className='h-6'/>
+                    <img src="logout.png" alt="logout" className='h-5 pr-2 mt-1'/>
                     <Slidelink linkname='Log out' linkurl='/logout'></Slidelink>
                 </div>
             </div>
