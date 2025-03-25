@@ -1,13 +1,23 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
+import './aa.css';
 
 function Slidelink(props) {
   return (
     <div>
-      <Link to={props.linkurl} className="hover:text-[#c3c0c0]/50">{props.linkname}</Link>
+      <Link to={props.linkurl} className="text-gray-100 hover:text-[#F6941F]">{props.linkname}</Link>
       {props.children}
     </div>
   )
 }
 
-export default Slidelink
+function Slidelink2(props) {
+  return (
+    <div>
+      <Link to={props.linkurl2} className=' hover:text-[#F6941F] transition duration-300 text-gray-300'>{props.linkname2}</Link>
+      {props.children}
+    </div>
+  )
+}
+
+export { Slidelink, Slidelink2 };
