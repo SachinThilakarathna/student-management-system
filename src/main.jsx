@@ -3,14 +3,17 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import About from './Pages/About.jsx'
-import Afterlogin from './Pages/Afterlogin.jsx'
 import Login from './Pages/Login.jsx'
+import Dashboard from './Pages/Dashboard.jsx'
 
 //React router dome
 import { 
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { GrDashboard } from 'react-icons/gr'
+import Course from './Pages/Course.jsx'
+import Addstudent from './Pages/Manage Student/Addstudent.jsx'
 
 const router = createBrowserRouter([
   {
@@ -23,13 +26,25 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/after",
-    element: <Afterlogin /> ,
+    path: "/dashboard",
+    element: <Dashboard /> 
   },
 
   {
     path: "/login",
     element: <Login /> ,
+  },
+  {
+    path: "/course",
+    element: <Course /> ,
+  },
+  {
+    path: "/addstudent",
+    element: <Addstudent /> ,
+  },
+  {
+    path: "/logout",
+    element: <App /> ,
   },
 ]);
 
