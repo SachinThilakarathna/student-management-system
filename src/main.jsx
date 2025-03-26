@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import About from './Pages/About.jsx'
 import Afterlogin from './Pages/Afterlogin.jsx'
+import Login from './Pages/Login.jsx'
 
 //React router dome
 import { 
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
   {
     path: "/after",
     element: <Afterlogin /> ,
+  },
+
+  {
+    path: "/login",
+    element: <Login /> ,
   },
 ]);
 

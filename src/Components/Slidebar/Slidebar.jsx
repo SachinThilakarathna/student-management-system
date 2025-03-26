@@ -1,5 +1,8 @@
 import React from 'react'
-import { Slidelink, Slidelink2 } from "../Link/Slidelink.jsx";   // I import 2 functions use in same comonent
+import { Slidelink, Slidelink2 } from "../Link/Slidelink.jsx";  
+ // I import 2 functions use in same comonent
+ import { IoIosSettings } from "react-icons/io";
+ import { RiLogoutBoxRLine } from "react-icons/ri";
 
 import { useState } from "react";
 
@@ -9,6 +12,7 @@ function Slidebar() {
     return (
         <>
         <div>
+            <div className='absolute min-w-screen bg-[radial-gradient(circle,_#9f06c9,_#340138)] h-20'> ajkjkj</div>
             
         </div>
         <div className="relative items-center px-[50px] py-[10px] bg-[radial-gradient(circle,_#9f06c9,_#340138)] w-64 min-h-screen h-auto space-y-10">
@@ -20,8 +24,10 @@ function Slidebar() {
 
                 <div className='flex'>
                     <button onClick={() => setIsVisible(!isVisible)}
-                    className="text-gray-100 hover:text-[#F6941F]">Manage</button>
-                    <img src="dropdownarrow-icon.png" alt="logout" className='h-5 pl-8 mt-1'/>
+                    className="text-gray-100 hover:text-[#F6941F]">Manage Student</button>
+                    <div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[5px] border-t-gray-100 mt-2.5 ml-4 hover:border-t-[#F6941F]"></div>
+
+                    {/* <img src="dropdownarrow-icon.png" alt="logout" className='h-5 pl-8 mt-1'/> */}
                 </div>
 
 
@@ -33,6 +39,7 @@ function Slidebar() {
                 </div>
                 <Slidelink linkname='Audit Logs' linkurl='/auditlogs'/>
 
+
         </div>
 
 
@@ -41,11 +48,13 @@ function Slidebar() {
             {/* Bottom part of the slid bar */}
         <div className="absolute bottom-10  text-[#d6d6d6] font-semibold space-y-4">
             <div className='flex'>
-                <img src="setting.png" alt="setting" className='h-5 pr-2 mt-1'/>
+                {/* <img src="setting.png" alt="setting" className='h-5 pr-2 mt-1'/> */}
+                <IoIosSettings className=' mt-1 mr-2 w-5 h-5'/>
                 <Slidelink linkname='Settings' linkurl='/settings'/>
             </div>
-            <div className='flex'>
-                    <img src="logout.png" alt="logout" className='h-5 pr-2 mt-1'/>
+            <div className='flex hover:text-[#F6941F]'>
+                    {/* <img src="logout.png" alt="logout" className='h-5 pr-2 mt-1'/> */}
+                    <RiLogoutBoxRLine className=' mt-1 mr-2 w-5 h-5 text-[#d6d6d6] hover:text-[#F6941F]'/>
                     <Slidelink linkname='Log out' linkurl='/logout'></Slidelink>
             </div>
             </div>
