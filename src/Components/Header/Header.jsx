@@ -11,8 +11,6 @@ function Header() {
             <Menulink linkname="Home" url="/"/>
             <Menulink linkname="About" url="/about"/>
             <Menulink linkname="Login" url="/login"/>
-            <Menulink linkname="Dashboard" url="/dashboard"/>
-
         </div>
         </div>
         

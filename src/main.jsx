@@ -11,7 +11,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { GrDashboard } from 'react-icons/gr'
 import Course from './Pages/Course.jsx'
 import Addstudent from './Pages/Manage Student/Addstudent.jsx'
 
@@ -46,6 +45,8 @@ const router = createBrowserRouter([
     path: "/logout",
     element: <App /> ,
   },
+
+
 ]);
 
 createRoot(document.getElementById('root')).render(
