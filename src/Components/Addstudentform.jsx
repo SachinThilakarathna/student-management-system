@@ -6,18 +6,9 @@ function AddStudentForm() {
     lastName: '',
     address: '',
     birthday: '',
-    courses: [],
+    intake: '',
     image: null, // State to store the uploaded image
   });
-
-  const courses = [
-    'Mathematics',
-    'Science',
-    'English',
-    'History',
-    'Geography',
-    'Computer Science',
-  ];
 
   // Handle changes to form input fields
   const handleChange = (e) => {
@@ -25,19 +16,6 @@ function AddStudentForm() {
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
-
-  // Handle changes for course checkboxes
-  const handleCourseChange = (e) => {
-    const course = e.target.value;
-    const isChecked = e.target.checked;
-
-    setFormData({
-      ...formData,
-      courses: isChecked
-        ? [...formData.courses, course]
-        : formData.courses.filter((c) => c !== course),
     });
   };
 
@@ -115,24 +93,22 @@ function AddStudentForm() {
           />
         </div>
 
+        {/* Intake selection dropdown */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Select Courses</label>
-          <div className="space-y-2">
-            {courses.map((course, index) => (
-              <div key={index} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={`course-${course}`}
-                  name="courses"
-                  value={course}
-                  checked={formData.courses.includes(course)}
-                  onChange={handleCourseChange}
-                  className="mr-2"
-                />
-                <label htmlFor={`course-${course}`} className="text-sm">{course}</label>
-              </div>
-            ))}
-          </div>
+          <label htmlFor="intake" className="block text-sm font-medium text-gray-700">Select Intake</label>
+          <select
+            id="intake"
+            name="intake"
+            value={formData.intake}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            required
+          >
+            <option value="">Select an intake</option>
+            <option value="Intake 40">Intake 40</option>
+            <option value="Intake 41">Intake 41</option>
+            <option value="Intake 42">Intake 42</option>
+          </select>
         </div>
 
         {/* Image upload section */}

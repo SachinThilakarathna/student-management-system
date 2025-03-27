@@ -3,6 +3,7 @@ import { Slidelink, Slidelink2 } from "../Link/Slidelink.jsx";
 import { IoIosSettings } from "react-icons/io";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoMdArrowDropdown } from "react-icons/io";
+import LogoutLink from "../LogoutLink.jsx";
 
 function Slidebar() {
   const [isVisible, setIsVisible] = useState(
@@ -47,6 +48,7 @@ function Slidebar() {
           {/* Submenu: Keep Visible */}
           <div className={`${isVisible ? "block" : "hidden"} pl-4 space-y-4`}>
             <Slidelink2 linkname2="Add Student" linkurl2="/addstudent" />
+            <Slidelink2 linkname2="Reomive Student" linkurl2="/removestudent" />
             <Slidelink2 linkname2="View Student List" linkurl2="/viewstudentlist" />
             <Slidelink2 linkname2="View Student Details" linkurl2="/viewstudentdetails" />
           </div>
@@ -67,8 +69,8 @@ function Slidebar() {
             onClick={handleLogOut}
           >
             <RiLogoutBoxRLine className="mt-1 mr-2 w-5 h-5 text-[#d6d6d6]" />
-            <Slidelink linkname="Log out" linkurl="/logout" />
-
+            {/* <Slidelink linkname="Log out" linkurl="/logout" /> */}
+            <LogoutLink/>
           </div>
         </div>
       </div>

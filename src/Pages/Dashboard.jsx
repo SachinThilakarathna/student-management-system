@@ -8,7 +8,7 @@ function Dashboard() {
     <>
       <Slidebar />
       <Slidebarheader heading="Dashboard" />
-      <div className="pt-20 ml-64 z-10">
+      <div className="pt-20 ml-64 z-3">
         <div className="mb-15">
           <h1 className="relative ml-10 mt-10 font-bold text-[19px] sm:text-[20px] md:text-[23px]">
             Overview
