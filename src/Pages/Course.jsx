@@ -1,19 +1,23 @@
-import React from 'react'
-import Slidebar from '../Components/Slidebar/Slidebar'
-import Slidebarheader from '../Components/Header/Slidebarheader'
+import React, { useState } from 'react';
+import Slidebar from '../Components/Slidebar/Slidebar';
+import Slidebarheader from '../Components/Header/Slidebarheader';
+import Addcourse from '../Components/Course/Addcourse';
+import Viewcourse from '../Components/Course/Viewcourse';
 
 function Course() {
+
+
   return (
     <>
-    <Slidebar/>
-    <Slidebarheader heading="Course"/>
-    <div className='relative ml-64'>
-      {/* <h1 className='relative ml-10 mt-10'>Welcome to Student Management System</h1> */}
-    </div>
-      
+      <Slidebar />
+      <Slidebarheader heading="Add Course" />
+      <div className="pt-25 ml-64 z-10">
+      <Addcourse/>
+      <Viewcourse/>
+      </div>
+
     </>
-  )
+  );
 }
 
-export default Course
-
+export default Course;

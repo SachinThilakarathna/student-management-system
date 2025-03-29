@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { ref, set, get } from "firebase/database";
+import { db } from "../firebase"; 
 
 function AddStudentForm() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    address: '',
-    birthday: '',
-    intake: '',
-    image: null, // State to store the uploaded image
+    firstName: "",
+    lastName: "",
+    address: "",
+    birthday: "",
+    intake: "",
+    gender: "",
   });
 
-  // Handle changes to form input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -19,21 +20,49 @@ function AddStudentForm() {
     });
   };
 
-  // Handle image upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({
-        ...formData,
-        image: file, // Store the uploaded file in state
-      });
+  // Generate the next unique ID based on intake number
+  const generateUniqueId = async (intakeNumber) => {
+    const intakeRef = ref(db, `StudentDetails/D-BSE/${intakeNumber}`);
+    const snapshot = await get(intakeRef);
+
+    if (snapshot.exists()) {
+      const studentCount = Object.keys(snapshot.val()).length;
+      const newStudentNumber = String(studentCount).padStart(4, "0"); // Format 0000-9999
+      return `StudentDetails/D-BSE/${intakeNumber}/${newStudentNumber}`;
+    } else {
+      return `StudentDetails/D-BSE/${intakeNumber}/0000`; // First student in the intake
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Process the form data (send it to Firebase, API, etc.)
-    console.log('Form submitted:', formData);
+
+    if (!formData.intake) {
+      alert("Please select an intake!");
+      return;
+    }
+
+    const uniqueId = await generateUniqueId(formData.intake);
+
+    // Save student data in Firebase
+    set(ref(db, uniqueId), {
+      Name: `${formData.firstName} ${formData.lastName}`,
+      Address: formData.address,
+      Birthday: formData.birthday,
+      Gender: formData.gender,
+    })
+      .then(() => {
+        alert("Student added successfully!");
+        setFormData({ firstName: "", lastName: "", address: "", birthday: "", intake: "", gender: "" });
+      })
+      .catch((error) => {
+        alert("Error adding student: " + error.message);
+      });
+  };
+
+  // Function to clear form data
+  const handleClear = () => {
+    setFormData({ firstName: "", lastName: "", address: "", birthday: "", intake: "", gender: "" });
   };
 
   return (
@@ -75,7 +104,7 @@ function AddStudentForm() {
             value={formData.address}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            rows="3"
+            rows="1"
             required
           />
         </div>
@@ -92,6 +121,24 @@ function AddStudentForm() {
             required
           />
         </div>
+        
+        {/* Gender selection dropdown */}
+        <div>
+          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Select Gender</label>
+          <select
+            id="gender"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
 
         {/* Intake selection dropdown */}
         <div>
@@ -105,43 +152,25 @@ function AddStudentForm() {
             required
           >
             <option value="">Select an intake</option>
-            <option value="Intake 40">Intake 40</option>
-            <option value="Intake 41">Intake 41</option>
-            <option value="Intake 42">Intake 42</option>
+            <option value="40">Intake 40</option>
+            <option value="41">Intake 41</option>
+            <option value="42">Intake 42</option>
           </select>
         </div>
 
-        {/* Image upload section */}
-        <div>
-          <label htmlFor="image" className="block text-sm font-small text-gray-700">Upload Image</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        {/* Display the selected image preview if available */}
-        {formData.image && (
-          <div className="mt-4">
-            <h3 className="text-sm font-medium text-gray-700">Image Preview:</h3>
-            <img
-              src={URL.createObjectURL(formData.image)}
-              alt="Student"
-              className="mt-2 w-32 h-32 object-cover rounded-full"
-            />
-          </div>
-        )}
-
-        <div className="flex justify-end">
+        <div className="flex justify-end sm:flex-row flex-col gap-4">
           <button
             type="submit"
             className="px-4 py-2 hover:bg-[#8D05B1] transition bg-[#631a5c] text-white font-semibold rounded-md"
           >
             Add Student
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="px-4 py-2 hover:bg-gray-300 transition bg-gray-200 text-gray-700 font-semibold rounded-md"
+          >
+            Clear
           </button>
         </div>
       </form>
