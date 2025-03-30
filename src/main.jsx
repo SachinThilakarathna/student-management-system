@@ -13,6 +13,9 @@ import {
 } from "react-router-dom";
 import Course from './Pages/Course.jsx'
 import Addstudent from './Pages/Manage Student/Addstudent.jsx'
+import ViewStudentdetails from './Pages/Manage Student/ViewStudentdetails.jsx'
+import EditStudent from './Components/Student/EditStudent.jsx'
+import AuditLogpage from './Pages/AuditLogpage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,44 @@ const router = createBrowserRouter([
     path: "/logout",
     element: <App /> ,
   },
+  {
+    path: "/viewstudentdetails",
+    element: <ViewStudentdetails/>
+  },
+
+  {
+    path: "/edit-student/:intake/:studentId",
+    element: <EditStudent/>
+  },
+  
+  {
+    path: "/auditlogs",
+    element: <AuditLogpage/>
+  },
+
+
+
+  
+  
+
+ 
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+ 
 
 
 ]);

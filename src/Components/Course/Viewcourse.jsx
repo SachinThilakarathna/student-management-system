@@ -63,21 +63,53 @@ const Viewcourse = () => {
     try {
       // Delete the specific course from Firebase
       await remove(ref(db, `courses/${semester}/${moduleKey}`));
+      
       // After removing, re-fetch courses
       fetchCourses(selectedYear);
       
       // Show success notification
-      toast.success("Course removed successfully!");
+      toast.success("Course removed successfully!", {
+        position: "top-center",
+        autoClose: 2000,
+        style: {
+          background: "", // Customize background if needed
+          color: "#7F7F7F",
+          borderRadius: "8px", // Rounded Corners
+          fontSize: "16px", // Font Size
+          padding: "15px", // Padding Inside Toast
+          top: "70px",
+        },
+        progressStyle: {
+          background: "#be1faf", // Light Purple Progress Bar
+        },
+      });
+  
     } catch (error) {
       console.error('Error removing course:', error);
-      // Show error notification if something goes wrong
-      toast.error("Error removing course!");
+      
+      // Show error notification
+      toast.error("Error removing course!", {
+        position: "top-center",
+        autoClose: 2000,
+        style: {
+          background: "#FFCCCC", // Light red for error
+          color: "#7F7F7F",
+          borderRadius: "8px",
+          fontSize: "16px",
+          padding: "15px",
+          top: "70px",
+        },
+        progressStyle: {
+          background: "#FF3333", // Red progress bar for errors
+        },
+      });
     }
   };
+  
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
-      <h2 className="text-xl font-bold mb-4">Curriculum Details</h2>
+    <div className="max-w-5xl mx-auto p-6 bg-white">
+      <h2 className="text-xl  font-bold mb-4 ">Curriculum Details</h2>
 
       {/* Year Selection Dropdown */}
       <select
@@ -107,9 +139,9 @@ const Viewcourse = () => {
             <div key={semesterIndex}>
               <h4 className="font-bold mt-4 mb-4">{semester} Courses</h4>
               {courses[semester]?.length > 0 ? (
-                <table className="w-full border-collapse border border-gray-100 mb-4">
-                  <thead>
-                    <tr className="bg-gray-200">
+                <table className="w-full border-collapse border border-white mb-4">
+                  <thead >
+                    <tr className="bg-gray-200 ">
                       <th className="border p-2" style={{ width: '150px' }}>
                         Module Code
                       </th>
@@ -119,15 +151,15 @@ const Viewcourse = () => {
                   <tbody>
                     {courses[semester].map((course, index) => (
                       <tr key={index} className="">
-                        <td className="border p-2" style={{ width: '250px' }}>
+                        <td className="border p-2" style={{ width: '150px' }}>
                           {course.moduleNumber}
                         </td>
                         <td className="border p-2">{course.moduleName}</td>
-                        <td className="mr-2 text-right">
+                        <td className="mr-2 pl-2 align-text-center">
                           {/* Delete Icon */}
                           <MdDelete
                             onClick={() => removeCourse(semester, course.moduleKey)}
-                            className="text-red-600 cursor-pointer hover:text-red-800 ml-1"
+                            className="text-red-600 cursor-pointer hover:text-red-800 ml-1" 
                           />
                         </td>
                       </tr>

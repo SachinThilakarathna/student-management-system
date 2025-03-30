@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ref, set, get } from "firebase/database";
-import { db } from "../firebase"; 
+import { db } from "../../firebase";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddStudentForm() {
   const [formData, setFormData] = useState({
@@ -12,61 +14,167 @@ function AddStudentForm() {
     gender: "",
   });
 
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+  });
+
+  // Function to check if a StudentID already exists
+  const checkStudentIdExists = async (intake, studentId) => {
+    const studentRef = ref(db, `StudentDetails/D-BSE/${intake}/${studentId}`);
+    const snapshot = await get(studentRef); // 'get' is now properly imported
+    return snapshot.exists();
+  };
+
+  // Generate a unique Student ID in the format 0000, 0001, ...
+  const generateUniqueStudentId = async (intakeNumber) => {
+    let studentId = null;
+    let isUnique = false;
+    let count = 0;
+
+    // Try to generate a unique student ID
+    while (!isUnique) {
+      studentId = String(count).padStart(4, "0"); // Format to 4 digits (0000, 0001, ...)
+      isUnique = !(await checkStudentIdExists(intakeNumber, studentId)); // Check if the ID exists
+      count++;
+    }
+
+    return studentId;
+  };
+
+  // Validate name to allow only letters and spaces
+  const validateName = (name, field) => {
+    const regex = /^[A-Za-z\s]+$/; // Only allow letters and spaces
+    if (!regex.test(name)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: "Name must contain only letters and spaces",
+      }));
+      return false;
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+    return true;
+  };
+
+  // Handle input changes with validation for first and last name
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate first name and last name
+    if (name === "firstName" || name === "lastName") {
+      validateName(value, name);
+    }
+
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
-  // Generate the next unique ID based on intake number
-  const generateUniqueId = async (intakeNumber) => {
-    const intakeRef = ref(db, `StudentDetails/D-BSE/${intakeNumber}`);
-    const snapshot = await get(intakeRef);
-
-    if (snapshot.exists()) {
-      const studentCount = Object.keys(snapshot.val()).length;
-      const newStudentNumber = String(studentCount).padStart(4, "0"); // Format 0000-9999
-      return `StudentDetails/D-BSE/${intakeNumber}/${newStudentNumber}`;
-    } else {
-      return `StudentDetails/D-BSE/${intakeNumber}/0000`; // First student in the intake
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.intake) {
-      alert("Please select an intake!");
+    // Validate first name and last name before proceeding
+    if (!validateName(formData.firstName, "firstName") || !validateName(formData.lastName, "lastName")) {
+      toast.error("Please enter valid names (letters and spaces only)", {
+        position: "top-center",
+        autoClose: 2000,
+        style: {
+          background: "#D4EDDA",
+          color: "#155724",
+          borderRadius: "8px", // Rounded Corners
+          fontSize: "16px", // Font Size
+          padding: "15px", // Padding Inside Toast
+          top: "70px",
+        },
+      });
       return;
     }
 
-    const uniqueId = await generateUniqueId(formData.intake);
+    if (!formData.intake) {
+      toast.error("Please select an intake!", { position: "top-center", autoClose: 2000,
+        style: {
+          background: "#D4EDDA",
+          color: "#155724",
+          borderRadius: "8px", // Rounded Corners
+          fontSize: "16px", // Font Size
+          padding: "15px", // Padding Inside Toast
+          top: "70px",
+        },
+       });
+      return;
+    }
 
-    // Save student data in Firebase
-    set(ref(db, uniqueId), {
+    // Generate a unique student ID
+    const uniqueStudentId = await generateUniqueStudentId(formData.intake);
+
+    // Save student details to Firebase
+    set(ref(db, `StudentDetails/D-BSE/${formData.intake}/${uniqueStudentId}`), {
       Name: `${formData.firstName} ${formData.lastName}`,
       Address: formData.address,
       Birthday: formData.birthday,
       Gender: formData.gender,
     })
       .then(() => {
-        alert("Student added successfully!");
-        setFormData({ firstName: "", lastName: "", address: "", birthday: "", intake: "", gender: "" });
+        toast.success("Student added successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          style: {
+            background: "#D4EDDA",
+            color: "#155724",
+            borderRadius: "8px", // Rounded Corners
+            fontSize: "16px", // Font Size
+            padding: "15px", // Padding Inside Toast
+            top: "70px",
+          },
+          progressStyle: {
+            background: "#be1faf", // Light Purple Progress Bar
+          },
+        });
+
+        // Clear the form after successful submission
+        setFormData({
+          firstName: "",
+          lastName: "",
+          address: "",
+          birthday: "",
+          intake: "",
+          gender: "",
+        });
       })
       .catch((error) => {
-        alert("Error adding student: " + error.message);
+        toast.error(`Error adding student: ${error.message}`, {
+          position: "top-center",
+          autoClose: 2000,
+          style: {
+            background: "#D4EDDA",
+            color: "#155724",
+            borderRadius: "8px", // Rounded Corners
+            fontSize: "16px", // Font Size
+            padding: "15px", // Padding Inside Toast
+            top: "70px",
+          },
+          progressStyle: {
+            background: "#631a5c", // Dark Purple Progress Bar
+          },
+        });
       });
   };
 
-  // Function to clear form data
   const handleClear = () => {
-    setFormData({ firstName: "", lastName: "", address: "", birthday: "", intake: "", gender: "" });
+    setFormData({
+      firstName: "",
+      lastName: "",
+      address: "",
+      birthday: "",
+      intake: "",
+      gender: "",
+    });
+    setErrors({ firstName: "", lastName: "" });
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
+    <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4 text-[#5E0370]">Add New Student</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -81,6 +189,7 @@ function AddStudentForm() {
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               required
             />
+            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
           </div>
           <div>
             <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
@@ -93,6 +202,7 @@ function AddStudentForm() {
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               required
             />
+            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
           </div>
         </div>
 
@@ -121,8 +231,7 @@ function AddStudentForm() {
             required
           />
         </div>
-        
-        {/* Gender selection dropdown */}
+
         <div>
           <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Select Gender</label>
           <select
@@ -140,7 +249,6 @@ function AddStudentForm() {
           </select>
         </div>
 
-        {/* Intake selection dropdown */}
         <div>
           <label htmlFor="intake" className="block text-sm font-medium text-gray-700">Select Intake</label>
           <select

@@ -41,7 +41,7 @@ function Addcourse() {
           position: "top-center",
           autoClose: 2000,
           style: {
-            background: "",
+            background: "", // Customize background if needed
             color: "#7F7F7F",
             borderRadius: "8px", // Rounded Corners
             fontSize: "16px", // Font Size
@@ -60,8 +60,8 @@ function Addcourse() {
           position: "top-center",
           autoClose: 2000,
           style: {
-            background: "", // Light Purple Background
-            color: "#7F7F7F", // White Text
+            background: "#D4EDDA",
+            color: "#155724",
             borderRadius: "8px", // Rounded Corners
             fontSize: "16px", // Font Size
             padding: "15px", // Padding Inside Toast
@@ -78,8 +78,8 @@ function Addcourse() {
         position: "top-center",
         autoClose: 2000,
         style: {
-          background: "#be1faf", // Light Purple Background
-          color: "#ffffff", // White Text
+          background: "#D4EDDA",
+          color: "#155724",
           borderRadius: "8px", // Rounded Corners
           fontSize: "16px", // Font Size
           padding: "15px", // Padding Inside Toast
@@ -97,7 +97,7 @@ function Addcourse() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg">
       <h2 className="text-2xl font-bold mb-4 text-[#5E0370]">Add New Course</h2>
       
       {/* Inputs and Buttons in One Line (for larger screens, stack for smaller) */}

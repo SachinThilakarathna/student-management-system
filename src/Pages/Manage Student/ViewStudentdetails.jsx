@@ -1,16 +1,16 @@
 import React from 'react'
 import Slidebar from '../../Components/Slidebar/Slidebar'
 import Slidebarheader from '../../Components/Header/Slidebarheader'
-import AddStudentForm from '../../Components/Student/Addstudentform'
+import ViewStudentList from '../../Components/Student/ViewStudentList'
 
 
-function Addstudent() {
+function ViewStudentdetails() {
   return (
     <>
     <Slidebar/>
-    <Slidebarheader heading="Manage Student / Add Student"/>
+    <Slidebarheader heading="Manage Student / View Students Details"/>
     <div className="pt-25 ml-64 z-10">
-        <AddStudentForm/> 
+        <ViewStudentList/>
     </div>
     
       
@@ -18,5 +18,5 @@ function Addstudent() {
   )
 }
 
-export default Addstudent
+export default ViewStudentdetails
 

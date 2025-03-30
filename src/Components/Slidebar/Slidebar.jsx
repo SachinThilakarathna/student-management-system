@@ -48,9 +48,9 @@ function Slidebar() {
           {/* Submenu: Keep Visible */}
           <div className={`${isVisible ? "block" : "hidden"} pl-4 space-y-4`}>
             <Slidelink2 linkname2="Add Student" linkurl2="/addstudent" />
-            <Slidelink2 linkname2="Remove Student" linkurl2="/removestudent" />
-            <Slidelink2 linkname2="View Student List" linkurl2="/viewstudentlist" />
-            <Slidelink2 linkname2="View Student Details" linkurl2="/viewstudentdetails" />
+            {/* <Slidelink2 linkname2="Remove Student" linkurl2="/removestudent" /> */}
+            <Slidelink2 linkname2="View Students Details" linkurl2="/viewstudentdetails" />
+            {/* <Slidelink2 linkname2="Edit Student Details" linkurl2="/editStudentpage" /> */}
           </div>
 
           <Slidelink linkname="Audit Logs" linkurl="/auditlogs" />
