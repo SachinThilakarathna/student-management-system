@@ -69,9 +69,9 @@ const AuditLogsCourse = () => {
             <tbody>
               {auditLogs.map((log, index) => (
                 <tr key={index} className="border-b hover:bg-gray-100">
-                  <td className="border border-[#ded5d5] p-2">{log.type}</td>
-                  <td className="border border-[#ded5d5] p-2">{renderDetails(log.details)}</td>
-                  <td className="border border-[#ded5d5] p-2">{log.dateTime}</td>
+                  <td className="border border-[#ded5d5] p-2 font-semibold">{log.type}</td>
+                  <td className="border border-[#ded5d5] p-2  text-neutral-700">{renderDetails(log.details)}</td>
+                  <td className="border border-[#ded5d5] p-2  text-neutral-500">{log.dateTime}</td>
                 </tr>
               ))}
             </tbody>

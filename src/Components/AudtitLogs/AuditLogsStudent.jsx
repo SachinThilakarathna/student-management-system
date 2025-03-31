@@ -57,17 +57,17 @@ const AuditLogsStudent = () => {
           <table className="w-full border-collapse border border-white">
             <thead>
               <tr className='bg-[#631a5c] text-white'>
-                <th className="border p-2 border-[#5E0370]">Type</th>
+                <th className="border p-2 border-[#5E0370] w-55">Type</th>
                 <th className="border p-2 border-[#5E0370]">Details</th>
-                <th className="border p-2 border-[#5E0370]">Date & Time</th>
+                <th className="border p-2 border-[#5E0370] w-72">Date & Time</th>
               </tr>
             </thead>
             <tbody>
               {auditLogs.map((log, index) => (
                 <tr key={index} className="border-b hover:bg-gray-100">
-                  <td className="border border-[#ded5d5] p-2">{log.type}</td>
-                  <td className="border border-[#ded5d5] p-2">{log.details}</td>
-                  <td className="border border-[#ded5d5] p-2">{log.dateTime}</td>
+                  <td className="border border-[#ded5d5] p-2 font-semibold">{log.type}</td>
+                  <td className="border border-[#ded5d5] p-2 text-neutral-700">{log.details}</td>
+                  <td className="border border-[#ded5d5] p-2 text-neutral-500">{log.dateTime}</td>
                 </tr>
               ))}
             </tbody>

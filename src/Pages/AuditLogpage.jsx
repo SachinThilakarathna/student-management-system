@@ -12,11 +12,12 @@ function AuditLogpage() {
       <Slidebar />
       <Slidebarheader heading="Audit Logs" />
       
-      <div className="pt-25 ml-64 z-10">
+      <div className="pt-30 ml-64 mb-20 z-10">
         <AuditLogsCourse/>
         <AuditLogsStudent/>
         <LogDetailsAuditLogs/>
       </div>
+     
     </>
   );
 }

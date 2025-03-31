@@ -10,7 +10,7 @@ function Header() {
         <div className='relative  flex gap-12 text-[#d6d6d6] font-semibold '>
             <Menulink linkname="Home" url="/"/>
             <Menulink linkname="About" url="/about"/>
-            <Menulink linkname="Login" url="/login"/>
+            <Menulink linkname="Login" url="/login" className1="text-[#F6941F] font-extrabold"/>
         </div>
         </div>
         

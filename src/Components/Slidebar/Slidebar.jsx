@@ -4,6 +4,7 @@ import { IoIosSettings } from "react-icons/io";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoMdArrowDropdown } from "react-icons/io";
 import LogoutLink from "../LogoutLink.jsx";
+import Footer from "../Footer/Footer.jsx";
 
 function Slidebar() {
   const [isVisible, setIsVisible] = useState(
@@ -27,7 +28,7 @@ function Slidebar() {
   return (
     <>
       {/* Sidebar Section */}
-      <div className="fixed top-0 left-0 h-full items-center px-[50px] py-[10px] bg-[radial-gradient(circle,_#9f06c9,_#340138)] w-64 min-h-screen space-y-10">
+      <div className="fixed top-0 left-0 h-full items-center px-[50px] py-[10px] bg-[radial-gradient(circle,_#9f06c9,_#340138)] w-64 min-h-screen space-y-10 z-10">
         <img src="akura-logo.png" alt="logo" className="h-20 pt-5 pb-5" />
 
         <div className="relative font-semibold space-y-4">
@@ -58,22 +59,22 @@ function Slidebar() {
 
         {/* Bottom Section */}
         <div className="absolute bottom-10 text-[#d6d6d6] font-semibold space-y-4">
-          <div className="flex">
+          {/* <div className="flex">
             <IoIosSettings className="mt-1 mr-2 w-5 h-5" />
             <Slidelink linkname="Settings" linkurl="/settings" />
-          </div>
+          </div> */}
 
           {/* Log out Section - Disables Sidebar State Reset on Click */}
           <div
-            className="flex hover:text-[#F6941F]"
+            className="flex hover:text-[#F6941F] mb-2"
             onClick={handleLogOut}
           >
             <RiLogoutBoxRLine className="mt-1 mr-2 w-5 h-5 text-[#d6d6d6]" />
-            {/* <Slidelink linkname="Log out" linkurl="/logout" /> */}
             <LogoutLink/>
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

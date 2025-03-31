@@ -6,7 +6,9 @@ import { getDatabase, ref, set } from "firebase/database"; // Correct import for
 import "react-toastify/dist/ReactToastify.css";
 
 function LogoutLink() {
+  
   const navigate = useNavigate();
+  
 
   // Function to log logout activity
   const logLogout = async (email) => {

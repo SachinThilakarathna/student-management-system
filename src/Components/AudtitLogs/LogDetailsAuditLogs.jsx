@@ -41,8 +41,8 @@ function LogDetailsAuditLogs() {
       <h2 className="text-2xl font-bold mb-4 text-[#5E0370]">Login & Logout Logs</h2>
       {loading && <p>Loading logs...</p>}
       {!loading && logs.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-[#5E0370]">
+        <div className="overflow-x-auto shadow-xl">
+          <table className="w-full bg-white border border-[#5E0370]">
             <thead>
               <tr className="bg-[#631a5c] text-white">
                 <th className="px-4 py-2 border border-[#5E0370]">Email</th>
@@ -53,9 +53,16 @@ function LogDetailsAuditLogs() {
             <tbody>
               {logs.map((log, index) => (
                 <tr key={index} className="border-b hover:bg-gray-100">
-                  <td className="px-4 py-2 border border-[#ded5d5]">{log.email}</td>
-                  <td className="px-4 py-2 border border-[#ded5d5]">{log.type}</td>
-                  <td className="px-4 py-2 border border-[#ded5d5]">{log.dateTime}</td>
+                  <td className="px-4 py-2 border border-[#ded5d5] font-semibold">{log.email}</td>
+                  <td
+                    className={`px-4 py-2 border border-[#ded5d5] font-semibold text-center 
+                    ${log.type === "login" ? "text-green-700" : 
+                      log.type === "logout" ? "text-red-700" : 
+                      "bg-gray-100 text-gray-700"}`}
+                  >
+                    {log.type}
+                  </td>
+                  <td className="px-4 py-2 border border-[#ded5d5]  text-neutral-500">{log.dateTime}</td>
                 </tr>
               ))}
             </tbody>

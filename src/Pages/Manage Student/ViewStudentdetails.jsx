@@ -9,7 +9,7 @@ function ViewStudentdetails() {
     <>
     <Slidebar/>
     <Slidebarheader heading="Manage Student / View Students Details"/>
-    <div className="pt-25 ml-64 z-10">
+    <div className="pt-30 ml-64 z-10 h-screen">
         <ViewStudentList/>
     </div>
     

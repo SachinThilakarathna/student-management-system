@@ -81,8 +81,8 @@ function Addcourse() {
           position: "top-center",
           autoClose: 2000,
           style: {
-            background: "",
-            color: "#7F7F7F",
+            background: "#D4EDDA",
+            color: "#155724",
             borderRadius: "8px",
             fontSize: "16px",
             padding: "15px",

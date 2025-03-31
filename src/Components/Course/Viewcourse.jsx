@@ -119,8 +119,8 @@ const Viewcourse = () => {
                   <tbody>
                     {courses[semester].map((course, index) => (
                       <tr key={index} >
-                        <td className="border p-2 border-[#ded5d5]">{course.moduleNumber}</td>
-                        <td className="border p-2 border-[#ded5d5]">{course.moduleName}</td>
+                        <td className="border p-2 border-[#ded5d5]  text-neutral-900">{course.moduleNumber}</td>
+                        <td className="border p-2 border-[#ded5d5]  text-neutral-900">{course.moduleName}</td>
                         <td className="mr-2 pl-2">
                           <MdDelete
                             onClick={() => removeCourse(semester, course.moduleKey)}

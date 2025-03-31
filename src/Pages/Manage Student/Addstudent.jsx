@@ -9,7 +9,7 @@ function Addstudent() {
     <>
     <Slidebar/>
     <Slidebarheader heading="Manage Student / Add Student"/>
-    <div className="pt-25 ml-64 z-10">
+    <div className="pt-30 ml-64 z-10  h-screen">
         <AddStudentForm/> 
     </div>
     
