@@ -10,7 +10,7 @@ function Course() {
   return (
     <>
       <Slidebar />
-      <Slidebarheader heading="Add Course" />
+      <Slidebarheader heading="Course" />
       <div className="pt-25 ml-64 z-10">
       <Addcourse/>
       <Viewcourse/>

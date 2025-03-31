@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ref, set, get } from "firebase/database";
+import { ref, set, get, push } from "firebase/database";
 import { db } from "../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns"; // Importing date-fns to format date and time
 
 function AddStudentForm() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ function AddStudentForm() {
   // Function to check if a StudentID already exists
   const checkStudentIdExists = async (intake, studentId) => {
     const studentRef = ref(db, `StudentDetails/D-BSE/${intake}/${studentId}`);
-    const snapshot = await get(studentRef); // 'get' is now properly imported
+    const snapshot = await get(studentRef);
     return snapshot.exists();
   };
 
@@ -70,10 +71,9 @@ function AddStudentForm() {
       [name]: value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validate first name and last name before proceeding
     if (!validateName(formData.firstName, "firstName") || !validateName(formData.lastName, "lastName")) {
       toast.error("Please enter valid names (letters and spaces only)", {
@@ -90,7 +90,7 @@ function AddStudentForm() {
       });
       return;
     }
-
+  
     if (!formData.intake) {
       toast.error("Please select an intake!", { position: "top-center", autoClose: 2000,
         style: {
@@ -104,10 +104,10 @@ function AddStudentForm() {
        });
       return;
     }
-
+  
     // Generate a unique student ID
     const uniqueStudentId = await generateUniqueStudentId(formData.intake);
-
+  
     // Save student details to Firebase
     set(ref(db, `StudentDetails/D-BSE/${formData.intake}/${uniqueStudentId}`), {
       Name: `${formData.firstName} ${formData.lastName}`,
@@ -131,7 +131,19 @@ function AddStudentForm() {
             background: "#be1faf", // Light Purple Progress Bar
           },
         });
-
+  
+        // Log the activity in Firebase under 'AuditLogs'
+        const currentDate = format(new Date(), "yyyy-MM-dd"); // Get current date
+        const currentTime = format(new Date(), "hh:mm a"); // Get current time in 12-hour format
+        const logRef = ref(db, `AuditLogs/StudentLogs/log3`); // New path for StudentLogs with log3
+        const newLogRef = push(logRef);
+        set(newLogRef, {
+          type: "Register Student", // Log type for student registration
+          details: `Name: ${formData.firstName} ${formData.lastName}   / D-BSE-${formData.intake}-${uniqueStudentId}`,
+          date: currentDate,
+          time: currentTime,
+        });
+  
         // Clear the form after successful submission
         setFormData({
           firstName: "",
@@ -160,6 +172,7 @@ function AddStudentForm() {
         });
       });
   };
+  
 
   const handleClear = () => {
     setFormData({
@@ -276,7 +289,7 @@ function AddStudentForm() {
           <button
             type="button"
             onClick={handleClear}
-            className="px-4 py-2 hover:bg-gray-300 transition bg-gray-200 text-gray-700 font-semibold rounded-md"
+            className="px-4 py-2 hover:bg-gray-400 transition bg-gray-300 text-black font-semibold rounded-md"
           >
             Clear
           </button>

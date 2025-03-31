@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ref, get, update } from "firebase/database";
+import { ref, get, update, push } from "firebase/database";
 import { db } from "../../firebase";
 import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate for routing
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { format } from "date-fns"; // Importing date-fns to format the timestamp
 
 function EditStudent() {
   const { intake, studentId } = useParams(); // Extract intake and studentId from URL
@@ -74,15 +74,15 @@ function EditStudent() {
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
-
+  
     // Validate first and last name
     const isFirstNameValid = validateName(studentData.firstName, "firstName");
     const isLastNameValid = validateName(studentData.lastName, "lastName");
-
+  
     if (!isFirstNameValid || !isLastNameValid) {
       return; // Stop form submission if validation fails
     }
-
+  
     try {
       const updatedData = {
         Name: `${studentData.firstName} ${studentData.lastName}`,
@@ -92,16 +92,31 @@ function EditStudent() {
       };
       const studentRef = ref(db, `StudentDetails/D-BSE/${intake}/${studentId}`);
       await update(studentRef, updatedData); // Update student data in Firebase
+  
+      // Get the current date and time
+      const currentDate = format(new Date(), "yyyy-MM-dd"); // Format date as "03/31/2025"
+      const currentTime = format(new Date(), "hh:mm a"); // Format time as "11:30 PM" or "11:30 AM"
+  
+      // Create an audit log for the change with formatted date and time
+      const auditLog = {
+        type: "Edit student Details", // Type of the action
+        details: `Edite " ${studentData.firstName} ${studentData.lastName} " details`, // Details of the action
+        date: currentDate, // Save formatted date
+        time: currentTime, // Save formatted time
+      };
+  
+      // Push the audit log to Firebase under the specified path
+      const auditLogRef = ref(db, `AuditLogs/StudentLogs/log2`);
+      await push(auditLogRef, auditLog); // Save the audit log to Firebase
+  
       toast.success("Student details updated successfully!", {
         position: "top-center",
         autoClose: 2000,
       });
-      
+  
       setTimeout(() => {
         navigate("/viewstudentdetails"); // Redirect to the ViewStudentList page after successful update
       }, 2000); // Same duration as autoClose (2000ms)
-
-
     } catch (error) {
       console.error("Error updating student data:", error);
       toast.error("Error saving changes!", {
@@ -110,6 +125,7 @@ function EditStudent() {
       });
     }
   };
+  
 
   // Handle cancel button click to navigate back
   const handleCancel = () => {

@@ -2,6 +2,43 @@ import React, { useState } from 'react';
 import { db, ref, set } from '../../firebase'; // Import Realtime Database methods
 import { toast } from 'react-toastify'; // Import Toast for notifications
 
+// Function to log audit trail
+const logAudit = async (action, moduleNumber, moduleData) => {
+  try {
+    const now = new Date();
+    const formattedDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const formattedTime = now.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit', hour12: true });
+    
+    const auditLogRef = ref(db, `AuditLogs/ModuleLogs/log1/${moduleNumber}`);
+
+    // Prepare audit log entry
+    const logEntry = {
+      type: "Add Course",
+      details: moduleData,
+      date: formattedDate,
+      time: formattedTime,
+    };
+
+    // Save audit log
+    await set(auditLogRef, logEntry);
+  } catch (error) {
+    console.error("Error logging audit:", error);
+    toast.error("Error logging audit!", {
+      position: "top-center",
+      autoClose: 2000,
+      style: {
+        background: "#FFCCCC",
+        color: "#7F7F7F",
+        borderRadius: "8px",
+        fontSize: "16px",
+        padding: "15px",
+        top: "70px",
+      },
+      progressStyle: { background: "#FF3333" },
+    });
+  }
+};
+
 function Addcourse() {
   const [formData, setFormData] = useState({
     moduleNumber: '',
@@ -28,12 +65,15 @@ function Addcourse() {
     if (formData.moduleNumber && formData.moduleName && formData.semester) {
       try {
         // Save course data to Realtime Database
-        const courseRef = ref(db, `courses/${formData.semester}/${formData.moduleNumber}`)// Use module number as the key
+        const courseRef = ref(db, `courses/${formData.semester}/${formData.moduleNumber}`);
         await set(courseRef, {
           moduleNumber: formData.moduleNumber,
           moduleName: formData.moduleName,
-          
         });
+
+        // Log the course addition in AuditLogs
+        await logAudit("Added", formData.moduleNumber, formData);
+
         setFormData({ moduleNumber: '', moduleName: '', semester: '' });
 
         // Success toast notification
@@ -41,16 +81,14 @@ function Addcourse() {
           position: "top-center",
           autoClose: 2000,
           style: {
-            background: "", // Customize background if needed
+            background: "",
             color: "#7F7F7F",
-            borderRadius: "8px", // Rounded Corners
-            fontSize: "16px", // Font Size
-            padding: "15px", // Padding Inside Toast
+            borderRadius: "8px",
+            fontSize: "16px",
+            padding: "15px",
             top: "70px",
           },
-          progressStyle: {
-            background: "#be1faf", // Light Purple Progress Bar
-          },
+          progressStyle: { background: "#be1faf" },
         });
       } catch (error) {
         console.error("Error adding course: ", error);
@@ -62,14 +100,12 @@ function Addcourse() {
           style: {
             background: "#D4EDDA",
             color: "#155724",
-            borderRadius: "8px", // Rounded Corners
-            fontSize: "16px", // Font Size
-            padding: "15px", // Padding Inside Toast
+            borderRadius: "8px",
+            fontSize: "16px",
+            padding: "15px",
             top: "70px",
           },
-          progressStyle: {
-            background: "#631a5c", // Dark Purple Progress Bar
-          },
+          progressStyle: { background: "#631a5c" },
         });
       }
     } else {
@@ -80,14 +116,12 @@ function Addcourse() {
         style: {
           background: "#D4EDDA",
           color: "#155724",
-          borderRadius: "8px", // Rounded Corners
-          fontSize: "16px", // Font Size
-          padding: "15px", // Padding Inside Toast
+          borderRadius: "8px",
+          fontSize: "16px",
+          padding: "15px",
           top: "70px",
         },
-        progressStyle: {
-          background: "#631a5c", // Dark Purple Progress Bar
-        },
+        progressStyle: { background: "#631a5c" },
       });
     }
   };
@@ -100,7 +134,6 @@ function Addcourse() {
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg">
       <h2 className="text-2xl font-bold mb-4 text-[#5E0370]">Add New Course</h2>
       
-      {/* Inputs and Buttons in One Line (for larger screens, stack for smaller) */}
       <div className="flex flex-wrap gap-4 items-center">
         <input
           type="text"
@@ -134,7 +167,6 @@ function Addcourse() {
           ))}
         </select>
 
-        {/* Button Layout (Flex on small screens) */}
         <div className="w-full sm:w-auto flex sm:flex-row flex-col gap-4">
           <button
             onClick={handleAddCourse}
